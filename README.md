@@ -27,9 +27,10 @@
     go generate
     ```
    
-```
-go test -bench=. -benchmem
-```
+### 测试命令
+    ```
+    go test -bench=. -benchmem
+    ```
 
 ### 性能测试结果
 
