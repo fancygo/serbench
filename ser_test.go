@@ -5,6 +5,8 @@ import (
 	"encoding/xml"
 	goproto "github.com/gogo/protobuf/proto"
 	"github.com/golang/protobuf/proto"
+	"github.com/ugorji/go/codec"
+	msgpack1 "github.com/vmihailenco/msgpack"
 	"log"
 	"testing"
 )
@@ -85,6 +87,43 @@ func BenchmarkUnmarshalMsgp(b *testing.B) {
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		result.UnmarshalMsg(bytes)
+	}
+}
+
+func BenchmarkMarshalMsgp1(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		msgpack1.Marshal(&user)
+	}
+}
+func BenchmarkUnmarshalMsgp1(b *testing.B) {
+	bytes, _ := msgpack1.Marshal(&user)
+	b.ResetTimer()
+	var user1 User
+	for i := 0; i < b.N; i++ {
+		msgpack1.Unmarshal(bytes, &user1)
+	}
+}
+
+func BenchmarkMarshalMsgp2(b *testing.B) {
+	var mh codec.MsgpackHandle
+	var byteBuf []byte
+	encoder := codec.NewEncoderBytes(&byteBuf, &mh)
+	for i := 0; i < b.N; i++ {
+		encoder.Encode(user)
+	}
+}
+func BenchmarkUnmarshalMsgp2(b *testing.B) {
+	var mh codec.MsgpackHandle
+	var byteBuf []byte
+	encoder := codec.NewEncoderBytes(&byteBuf, &mh)
+	encoder.Encode(user)
+
+	var byteBuf_2 []byte
+	decoder := codec.NewDecoderBytes(byteBuf_2, &mh)
+	b.ResetTimer()
+	var user1 User
+	for i := 0; i < b.N; i++ {
+		decoder.Decode(&user1)
 	}
 }
 
