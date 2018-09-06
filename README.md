@@ -37,7 +37,7 @@
 ```
     goos: linux
     goarch: amd64
-    pkg: github.com/FancyGo/serbench
+    pkg: github.com/fancygo/serbench
     BenchmarkMarshalJson-2           1000000          1090 ns/op
     BenchmarkUnmarshalJson-2          500000          3059 ns/op
     BenchmarkMarshalXml-2             300000          4691 ns/op

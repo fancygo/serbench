@@ -147,7 +147,7 @@ func BenchmarkMarshalGogo(b *testing.B) {
 	}
 }
 func BenchmarkUnmarshalGogo(b *testing.B) {
-	bytes, _ := proto.Marshal(&gogoUser)
+	bytes, _ := goproto.Marshal(&gogoUser)
 	result := GogoUserProto{}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
